@@ -1,7 +1,6 @@
 'use client'
 
-import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Code, Monitor, Server, Star, Coffee, ChevronDown, MessageSquare, FolderOpen } from 'lucide-react'
 import SkillBar from '@/components/SkillBar'
@@ -16,7 +15,7 @@ type Role = {
 const ROLES: Role[] = [
   { text: "WEB DEVELOPER", color: "from-blue-400 to-purple-500" },
   { text: "GAMER", color: "from-blue-400 to-purple-500" },
-  { text: "EDITOR VIDEO", color: "from-blue-400 to-purple-500" }
+  { text: "VIDEO EDITOR", color: "from-blue-400 to-purple-500" }
 ];
 
 export default function Home() {
@@ -26,170 +25,179 @@ export default function Home() {
     setIsLoaded(true)
   }, [])
 
-  // Staggered animation for skill badges
-  
-
-  // Scroll indicator animation
-  const scrollAnimation = {
-    y: [0, 10, 0],
-    transition: {
-      y: {
-        repeat: Infinity,
-        duration: 1.5,
-        ease: "easeInOut",
-      }
-    }
-  }
-
   return (
     <main className="bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white overflow-hidden">
-      {/* Hero Section with Parallax */}
-      <section className="min-h-screen relative flex flex-col items-center justify-center text-center px-4">
-        {/* Animated background particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {isLoaded && Array(20).fill(0).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-blue-500"
-              initial={{ 
-                x: Math.random() * window.innerWidth, 
-                y: Math.random() * window.innerHeight,
-                scale: Math.random() * 0.5 + 0.5,
-                opacity: 0.1
-              }}
-              animate={{ 
-                x: Math.random() * window.innerWidth, 
-                y: Math.random() * window.innerHeight,
-                opacity: [0.1, 0.3, 0.1],
-              }}
-              transition={{ 
-                x: { duration: Math.random() * 20 + 15, repeat: Infinity },
-                y: { duration: Math.random() * 20 + 15, repeat: Infinity },
-                opacity: { duration: Math.random() * 3 + 2, repeat: Infinity },
-              }}
-              style={{
-                width: Math.random() * 20 + 5 + 'px',
-                height: Math.random() * 20 + 5 + 'px',
-              }}
-            />
-          ))}
-        </div>
+      {/* Hero Section with Enhanced Interactive Parallax */}
+<section className="min-h-screen relative flex flex-col items-center justify-center text-center px-4">
+  {/* Responsive animated background particles - reduced quantity on mobile */}
+  <div className="absolute inset-0 overflow-hidden">
+    {isLoaded && Array(window.innerWidth < 768 ? 10 : 20).fill(0).map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-blue-500"
+        initial={{ 
+          x: Math.random() * window.innerWidth, 
+          y: Math.random() * window.innerHeight,
+          scale: Math.random() * 0.5 + 0.5,
+          opacity: 0.1
+        }}
+        animate={{ 
+          x: Math.random() * window.innerWidth, 
+          y: Math.random() * window.innerHeight,
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{ 
+          x: { duration: Math.random() * 20 + 15, repeat: Infinity },
+          y: { duration: Math.random() * 20 + 15, repeat: Infinity },
+          opacity: { duration: Math.random() * 3 + 2, repeat: Infinity },
+        }}
+        style={{
+          width: window.innerWidth < 768 ? Math.random() * 15 + 3 + 'px' : Math.random() * 20 + 5 + 'px',
+          height: window.innerWidth < 768 ? Math.random() * 15 + 3 + 'px' : Math.random() * 20 + 5 + 'px',
+        }}
+      />
+    ))}
+  </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-950 z-0" />
-        
-        {/* Hero content */}
-        <div className="relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="mb-6"
-          >
-            <div className="relative w-48 aspect-[2/3] mx-auto">
-              {/* Gradient background animation */}
-              <motion.div 
-                className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 blur opacity-70"
-                animate={{ 
-                  rotate: 360,
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{ 
-                  rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                  scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                }}
-              />
-
-              {/* Container gambar with floating animation */}
-              <motion.div 
-                className="relative bg-gradient-to-b from-gray-900 to-gray-950 rounded-2xl overflow-hidden w-full h-full"
-                animate={{ 
-                  y: [-5, 5, -5],
-                }}
-                transition={{
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
-                }}
-              >
-                <Image
-                  src="/dimas.jpg" 
-                  alt="Foto Dimas"
-                  fill
-                  className="object-cover"
-                />
-              </motion.div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h1 className="text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-              Hey, I&apos;m Dimas
-            </h1>
-            
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "70%" }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto my-4"
-            />
-            
-            <motion.p 
-              className="text-gray-400 mt-2 text-xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-            >
-              <TypewriterEffect delay={60} startDelay={1500} />
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.5 }}
-              className="mt-6"
-            >
-              <div className="inline-block relative group cursor-pointer">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-60 group-hover:opacity-80 transition duration-200"></div>
-                <a 
-                  href="#about" 
-                  className="relative px-6 py-3 bg-gray-900 rounded-lg flex items-center"
-                >
-                  <span className="text-white group-hover:text-blue-200 transition duration-200">Lihat Profile</span>
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-        
-        {/* Enhanced scroll indicator */}
+  {/* Interactive background that responds to mouse/touch movement */}
+  <motion.div 
+    className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-950 z-0"
+    style={{
+      background: useMotionValue('linear-gradient(to bottom, transparent, rgb(3, 7, 18))')
+    }}
+    whileHover={{
+      background: 'linear-gradient(to bottom, rgba(59, 130, 246, 0.05), rgb(3, 7, 18))'
+    }}
+  />
+  
+  {/* Updated Hero content with mobile optimization */}
+  <div className="relative z-10 max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="mb-6"
+    >
+      {/* Update decorative elements sizing */}
+      <motion.div 
+        className="flex justify-center gap-4 mb-6"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        whileHover={{ gap: '20px', transition: { duration: 0.3 } }}
+        whileTap={{ scale: 0.95 }}
+      >
         <motion.div 
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-gray-400"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 3 }}
-          whileHover={{ scale: 1.1 }}
-        >
-          <span className="text-sm mb-2">Scroll</span>
-          <motion.div 
-            animate={scrollAnimation}
+          className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+          whileHover={{ width: '100px', transition: { duration: 0.3 } }}
+        />
+        <motion.div 
+          className="w-8 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+          whileHover={{ width: '40px', transition: { duration: 0.3 } }}
+        />
+        <motion.div 
+          className="w-12 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+          whileHover={{ width: '60px', transition: { duration: 0.3 } }}
+        />
+      </motion.div>
+
+      {/* Update heading sizes to be consistent */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <h1 className="text-6xl font-outfit font-bold mb-4">
+          <span className="block text-white">Hai, Aku</span>
+          <motion.span 
+            className="block bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
             whileHover={{ 
-              y: [0, 10, 0],
-              transition: {
-                duration: 0.5,
-                repeat: Infinity
-              }
+              backgroundImage: 'linear-gradient(to right, #60a5fa, #8b5cf6, #60a5fa)', 
+              backgroundSize: '200% 100%',
+              backgroundPosition: ['0%', '100%'],
+              transition: { duration: 1, repeat: Infinity, repeatType: 'reverse' } 
             }}
           >
-            <ChevronDown size={24} />
-          </motion.div>
+            Dimas
+          </motion.span>
+        </h1>
+        
+        {/* Update separator line */}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto my-8"
+          whileHover={{ 
+            height: '4px',
+            backgroundImage: 'linear-gradient(to right, #60a5fa, #8b5cf6, #60a5fa)',
+            backgroundSize: '200% 100%',
+            backgroundPosition: ['0%', '100%'],
+            transition: { 
+              height: { duration: 0.3 }, 
+              backgroundPosition: { duration: 2, repeat: Infinity, repeatType: 'reverse' } 
+            } 
+          }}
+        />
+        
+        {/* Update typewriter text size */}
+        <motion.p 
+          className="text-2xl text-gray-400 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
+        >
+          <TypewriterEffect delay={60} startDelay={1500} />
+        </motion.p>
+
+        {/* Update CTA button sizing */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2 }}
+          className="mt-10 flex flex-wrap gap-4 justify-center"
+        >
+          <motion.a 
+            href="#about" 
+            className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg overflow-hidden transition-all duration-300 text-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div 
+              className="absolute inset-0 bg-white/10 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-500"
+              whileTap={{ skewX: 0 }}
+            />
+            <span className="relative text-white font-medium">Cek Profil Saya</span>
+          </motion.a>
         </motion.div>
-      </section>
+      </motion.div>
+    </motion.div>
+  </div>
+  
+  {/* Update scroll indicator sizing */}
+  <motion.div 
+    className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-gray-400"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 3 }}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+  >
+    <span className="font-inter text-base mb-2">Gulir ke bawah</span>
+    <motion.div 
+      animate={{ 
+        y: [0, 8, 0],
+        transition: {
+          duration: 1.5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }}
+    >
+      <ChevronDown size={24} />
+    </motion.div>
+  </motion.div>
+</section>
 
       {/* About Me Section with animated cards */}
       <Section title="Tentang Saya" id="about">
@@ -208,18 +216,18 @@ export default function Home() {
           </div>
         </div>
         <div className="text-left">
-          <p className="text-gray-200 text-lg md:text-xl leading-relaxed font-light">
-            Halo! Saya <span className="text-blue-400 font-medium">Dimas</span>, seorang fresh graduate dari SMKN 1 Subang jurusan RPL.
-            Saya suka membangun website menggunakan bahasa PHP dan Javascript.
+          <p className="text-gray-200 font-inter text-lg md:text-xl leading-relaxed font-light">
+            Halo! Saya <span className="text-blue-400 font-medium">Dimas</span>, seorang lulusan baru dari SMKN 1 Subang jurusan RPL.
+            Saya senang membangun website menggunakan bahasa PHP dan Javascript.
           </p>
           <p className="text-gray-400 mt-5 leading-relaxed">
             Saat ini saya sedang belajar <span className="text-white font-medium">Laravel</span> dan <span className="text-white font-medium">Next.js</span>. Saya selalu bersemangat untuk mempelajari teknologi baru dan meningkatkan keterampilan pengembangan web saya.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Tag className="bg-blue-500/10 text-blue-300 border border-blue-500/20 hover:bg-blue-500/20 transition-all duration-300" icon={<Monitor size={14} />}>Web Dev</Tag>
-            <Tag className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all duration-300" icon={<Server size={14} />}>Backend</Tag>
-            <Tag className="bg-purple-500/10 text-purple-300 border border-purple-500/20 hover:bg-purple-500/20 transition-all duration-300" icon={<Star size={14} />}>UI/UX</Tag>
-            <Tag className="bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 transition-all duration-300" icon={<Coffee size={14} />}>Tech Enthusiast</Tag>
+            <Tag className="font-inter bg-blue-500/10 text-blue-300 border border-blue-500/20 hover:bg-blue-500/20 transition-all duration-300" icon={<Monitor size={14} />}>Pengembang Web</Tag>
+            <Tag className="font-inter bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all duration-300" icon={<Server size={14} />}>Backend</Tag>
+            <Tag className="font-inter bg-purple-500/10 text-purple-300 border border-purple-500/20 hover:bg-purple-500/20 transition-all duration-300" icon={<Star size={14} />}>UI/UX</Tag>
+            <Tag className="font-inter bg-amber-500/10 text-amber-300 border border-amber-500/20 hover:bg-amber-500/20 transition-all duration-300" icon={<Coffee size={14} />}>Pecinta Teknologi</Tag>
           </div>
         </div>
       </div>
@@ -227,7 +235,7 @@ export default function Home() {
     <div className="mt-10 flex flex-wrap gap-5 justify-center sm:justify-start">
       <a
         href='/proyek'
-        className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 hover:translate-y-1 hover:scale-105 transition-all duration-300 flex items-center gap-2"
+        className="font-inter px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 hover:translate-y-1 hover:scale-105 transition-all duration-300 flex items-center gap-2"
       >
         <FolderOpen size={18} /> 
         Lihat Proyek Saya
@@ -325,7 +333,7 @@ function TypewriterEffect({ delay = 60, startDelay = 1500 }: { delay?: number; s
   )
 }
 
-// Section component with animations
+// Update Section component
 interface SectionProps {
   title: string;
   subtitle?: string;
@@ -343,11 +351,11 @@ function Section({ title, subtitle, children, id }: SectionProps) {
         transition={{ duration: 0.5 }}
         className="mb-12"
       >
-        <h2 className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+        <h2 className="text-3xl font-outfit font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
           {title}
         </h2>
         {subtitle && (
-          <p className="text-gray-400">{subtitle}</p>
+          <p className="font-inter text-gray-400">{subtitle}</p>
         )}
         <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4"></div>
       </motion.div>
@@ -355,8 +363,6 @@ function Section({ title, subtitle, children, id }: SectionProps) {
     </section>
   )
 }
-
-// Interactive skill badge component
 
 // Experience Section Component
 function ExperienceSection() {
@@ -403,7 +409,7 @@ function ExperienceSection() {
   );
 }
 
-// New Timeline Item Component
+// Update TimelineItemNew component
 interface TimelineItemNewProps {
   title: string;
   company: string;
@@ -436,11 +442,11 @@ function TimelineItemNew({ title, company, period, description, index }: Timelin
       </motion.div>
       
       <motion.div 
-        className="bg-gray-800/50 backdrop-blur-sm rounded-lg shadow-lg p-6 ml-2 border-l-4 border-gradient-to-r from-blue-500 to-purple-600"
+        className="font-inter bg-gray-800/50 backdrop-blur-sm rounded-lg shadow-lg p-6 ml-2 border-l-4 border-gradient-to-r from-blue-500 to-purple-600"
         whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <h3 className="text-xl font-outfit font-bold text-white">{title}</h3>
           <div className="mt-2 md:mt-0 flex items-center">
             <span className="text-blue-400 font-medium">{company}</span>
             <span className="mx-2 text-gray-400">•</span>
@@ -452,10 +458,6 @@ function TimelineItemNew({ title, company, period, description, index }: Timelin
     </motion.div>
   );
 }
-
-
-
-
 
 // Tag component
 function Tag({ children, icon, className }: { children: React.ReactNode; icon: React.ReactNode; className?: string }) {

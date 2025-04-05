@@ -51,11 +51,7 @@ export default function Proyek() {
   // Filter projects based on category and search term
   const filteredProjects = projects
     .filter(project => selectedCategory === 'ALL' || project.category.includes(selectedCategory))
-    .filter(project => 
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.technologies.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      project.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    .filter(project => project.title.toLowerCase().includes(searchTerm.toLowerCase()))
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -139,11 +135,31 @@ export default function Proyek() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-700">
-            Project Saya
-          </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-          Kumpulan karya terbaru saya dari berbagai teknologi dan bidang. Jelajahi proyek-proyeknya untuk melihat detail dan implementasinya.
+          <div className="mb-6">
+            <motion.div 
+              className="flex justify-center gap-4 mb-4"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              whileHover={{ gap: '20px', transition: { duration: 0.3 } }}
+            >
+              <motion.div 
+                className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                whileHover={{ width: '100px', transition: { duration: 0.3 } }}
+              />
+              <motion.div 
+                className="w-8 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                whileHover={{ width: '40px', transition: { duration: 0.3 } }}
+              />
+            </motion.div>
+            <h1 className="font-outfit text-5xl md:text-6xl font-bold mb-4">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600">
+                Portofolio Proyek
+              </span>
+            </h1>
+          </div>
+          <p className="font-inter text-gray-400 max-w-2xl mx-auto">
+            Kumpulan karya terbaik yang telah saya kerjakan. Jelajahi setiap proyek untuk melihat detail implementasinya.
           </p>
         </motion.div>
         
@@ -161,12 +177,12 @@ export default function Proyek() {
               >
                 <input
                   type="text"
-                  placeholder="Search projects..."
+                  placeholder="Cari proyek..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-gray-800 text-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-gray-800 text-white font-inter"
                 />
                 <svg 
                   className="w-5 h-5 text-gray-400 absolute right-3 top-3"
@@ -279,8 +295,8 @@ export default function Proyek() {
                   d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <h3 className="text-xl font-medium text-gray-400 mb-1">Project Tidak Ada</h3>
-              <p className="text-gray-500">Project nya belum ada atau silakan anda ubah filter nya</p>
+              <h3 className="text-xl font-medium text-gray-400 mb-1 font-outfit">Proyek Tidak Ditemukan</h3>
+              <p className="text-gray-500 font-inter">Silakan coba dengan kata kunci lain atau ubah filter yang digunakan</p>
             </div>
           )}
         </div>
@@ -346,17 +362,17 @@ export default function Proyek() {
                 </div>
                 
                 <div className="prose prose-lg max-w-none mb-8">
-                  <h3 className="text-xl font-semibold text-white mb-2">Project Description</h3>
-                  <p className="text-gray-400">{selectedProject.longDescription || selectedProject.description}</p>
+                  <h3 className="text-xl font-semibold text-white mb-2 font-outfit">Deskripsi Proyek</h3>
+                  <p className="text-gray-400 font-inter">{selectedProject.longDescription || selectedProject.description}</p>
                 </div>
                 
                 <div className="mb-8">
-                  <h3 className="text-xl font-semibold text-white mb-4">Technologies Used</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4 font-outfit">Teknologi yang Digunakan</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedProject.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg text-sm font-medium"
+                        className="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg text-sm font-medium font-inter"
                       >
                         {tech}
                       </span>
@@ -370,16 +386,16 @@ export default function Proyek() {
                       href={selectedProject.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors text-center"
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors text-center font-inter"
                     >
-                      View Live Project
+                      Lihat Proyek
                     </a>
                   )}
                   <button
                     onClick={() => setSelectedProject(null)}
-                    className="bg-gray-800 hover:bg-gray-700 text-gray-400 font-medium py-3 px-6 rounded-lg transition-colors text-center"
+                    className="bg-gray-800 hover:bg-gray-700 text-gray-400 font-medium py-3 px-6 rounded-lg transition-colors text-center font-inter"
                   >
-                    Close
+                    Tutup
                   </button>
                 </div>
               </div>

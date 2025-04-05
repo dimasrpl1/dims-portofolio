@@ -34,22 +34,32 @@ export default function Navbar() {
   }, [isOpen])
 
   return (
-    <nav 
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={`${
         scrolled 
           ? 'bg-gray-900/95 backdrop-blur-md py-3 shadow-lg' 
-          : 'bg-gray-900 py-4 shadow-md'
+          : 'bg-gray-900 py-4'
       } text-white px-4 sm:px-6 sticky top-0 z-50 transition-all duration-300`}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <h1 className="text-2xl font-bold">
+        <motion.h1 
+          className="text-2xl font-bold font-outfit"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            DimsPortfolio
+            PortoDims
           </span>
-        </h1>
+        </motion.h1>
 
-        {/* Hamburger button with animation */}
-        <div className="md:hidden">
+        {/* Hamburger button with enhanced animation */}
+        <motion.div 
+          className="md:hidden"
+          whileTap={{ scale: 0.9 }}
+        >
           <button 
             onClick={(e) => {
               e.stopPropagation()
@@ -62,52 +72,64 @@ export default function Navbar() {
               {isOpen ? (
                 <motion.div
                   key="close"
-                  initial={{ rotate: 0, opacity: 1 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 180 }}
+                  exit={{ rotate: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <X size={24} />
                 </motion.div>
               ) : (
                 <motion.div
                   key="menu"
-                  initial={{ rotate: 0, opacity: 1 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ rotate: 180 }}
+                  animate={{ rotate: 0 }}
+                  exit={{ rotate: 180 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Menu size={24} />
                 </motion.div>
               )}
             </AnimatePresence>
           </button>
-        </div>
+        </motion.div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex gap-8 items-center">
+        <div className="hidden md:flex gap-8 items-center font-inter">
           <NavLinks pathname={pathname} />
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu with enhanced animation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden mt-4"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ 
+              duration: 0.3,
+              ease: "easeInOut"
+            }}
+            className="md:hidden mt-4 font-inter"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col rounded-lg overflow-hidden border border-gray-700 bg-gray-800/90 backdrop-blur-sm">
+            <motion.div 
+              className="flex flex-col rounded-lg overflow-hidden border border-gray-700 bg-gray-800/90 backdrop-blur-sm"
+              variants={{
+                open: { opacity: 1, y: 0 },
+                closed: { opacity: 0, y: -20 }
+              }}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
               <MobileNavLinks pathname={pathname} setIsOpen={setIsOpen} />
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   )
 }
 
@@ -119,20 +141,27 @@ function NavLinks({ pathname }: { pathname: string }) {
         { href: '/proyek', label: 'Proyek' },
         { href: '/kontak', label: 'Kontak' }
       ].map((link) => (
-        <Link key={link.href} href={link.href}>
-          <div
-            className={`relative text-lg font-medium hover:text-blue-400 transition-colors ${
-              pathname === link.href ? 'text-blue-400' : 'text-white'
-            }`}
-          >
-            {link.label}
-            {pathname === link.href && (
-              <span
-                className="absolute left-0 top-full block h-0.5 w-full rounded-full bg-gradient-to-r from-blue-400 to-purple-500"
-              />
-            )}
-          </div>
-        </Link>
+        <motion.div
+          key={link.href}
+          whileHover={{ y: -2 }}
+          whileTap={{ y: 0 }}
+        >
+          <Link href={link.href}>
+            <div
+              className={`relative text-lg font-medium hover:text-blue-400 transition-colors ${
+                pathname === link.href ? 'text-blue-400' : 'text-white'
+              }`}
+            >
+              {link.label}
+              {pathname === link.href && (
+                <motion.span
+                  layoutId="underline"
+                  className="absolute left-0 top-full block h-0.5 w-full rounded-full bg-gradient-to-r from-blue-400 to-purple-500"
+                />
+              )}
+            </div>
+          </Link>
+        </motion.div>
       ))}
     </>
   )

@@ -55,10 +55,10 @@ export default function Footer() {
         {/* Content with logo and social links */}
         <div className="flex flex-col items-center">
           <div className="mb-8 text-center">
-            <div className="font-bold text-xl mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-              DimsPortfolio
+            <div className="font-outfit font-bold text-xl mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              PortoDims
             </div>
-            <p className="text-gray-400 max-w-md">
+            <p className="font-inter text-gray-400 max-w-md">
               Jika anda berminat untuk bekerja sama atau memiliki pertanyaan, silakan hubungi saya melalui salah satu platform di bawah ini.
             </p>
           </div>
@@ -101,8 +101,8 @@ export default function Footer() {
           </div>
           
           <div className="w-full border-t border-gray-700/50 pt-6 flex justify-center">
-            <p className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} <span className="text-blue-400">DimsPortfolio</span>. All rights reserved.
+            <p className="text-sm text-gray-500 font-inter">
+              &copy; {new Date().getFullYear()} <span className="text-blue-400 font-outfit">PortoDims</span>. All rights reserved.
             </p>
           </div>
         </div>
