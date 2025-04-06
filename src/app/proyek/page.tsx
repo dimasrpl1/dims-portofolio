@@ -25,13 +25,28 @@ export default function Proyek() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchProjects()
-    setIsLoaded(true)
+    const initializePage = async () => {
+      try {
+        await fetchProjects()
+      } catch (error) {
+        console.error('Failed to initialize page:', error)
+      } finally {
+        setIsLoaded(true)
+      }
+    }
+
+    initializePage()
   }, [])
 
   async function fetchProjects() {
     try {
       setLoading(true)
+      
+      // Check if Supabase client is properly initialized
+      if (!supabase) {
+        throw new Error('Supabase client is not initialized')
+      }
+
       const { data, error } = await supabase
         .from('projects')
         .select('*')
@@ -42,32 +57,41 @@ export default function Proyek() {
       }
 
       if (data) {
-        const projectsWithUrls = data.map((project) => {
-          // Remove any existing full URLs from the image path
+        const projectsWithUrls = await Promise.all(data.map(async (project) => {
+          // Clean up image path
           const cleanImagePath = project.image.replace(
             /^https:\/\/.*\/storage\/v1\/object\/public\/project-images\//,
             ''
           )
 
-          // Get the correct public URL for the image
+          // Get public URL with error handling
           const { data: storageData } = supabase
             .storage
             .from('project-images')
             .getPublicUrl(cleanImagePath)
 
+          if (!storageData || !storageData.publicUrl) {
+            console.error('Error getting public URL for:', cleanImagePath)
+            return null
+          }
+
           return {
             ...project,
             category: Array.isArray(project.category) ? project.category : [project.category],
-            technologies: Array.isArray(project.technologies) ? project.technologies : project.technologies.split(','),
+            technologies: Array.isArray(project.technologies) 
+              ? project.technologies 
+              : project.technologies.split(','),
             image: storageData.publicUrl
           }
-        })
+        }))
 
-        console.log('Clean image paths:', projectsWithUrls.map(p => p.image))
-        setProjects(projectsWithUrls)
+        // Filter out any null values from failed image URLs
+        const validProjects = projectsWithUrls.filter((p): p is Project => p !== null)
+        setProjects(validProjects)
       }
     } catch (error) {
       console.error('Error fetching projects:', error)
+      // You might want to set an error state here to show to the user
     } finally {
       setLoading(false)
     }
