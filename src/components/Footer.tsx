@@ -52,15 +52,11 @@ export default function Footer() {
       </div>
       
       <div className="max-w-6xl mx-auto px-6">
-        {/* Content with logo and social links */}
         <div className="flex flex-col items-center">
           <div className="mb-8 text-center">
             <div className="font-outfit font-bold text-xl mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
               PortoDims
             </div>
-            <p className="font-inter text-gray-400 max-w-md">
-              Jika anda berminat untuk bekerja sama atau memiliki pertanyaan, silakan hubungi saya melalui salah satu platform di bawah ini.
-            </p>
           </div>
           
           <div className="flex gap-5 items-center mb-10">

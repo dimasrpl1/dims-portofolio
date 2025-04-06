@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'raw.githubusercontent.com', // kalau kamu pakai gambar dari sini juga
+        hostname: 'zfhloklwwkriufdxiloz.supabase.co',
       },
     ],
   },

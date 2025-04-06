@@ -2,9 +2,10 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
+import { supabase } from '@/utils/supabase'
 
 interface Project {
-  id: number
+  id: string // Change to string since Supabase uses UUID
   title: string
   category: string[]
   image: string
@@ -14,39 +15,63 @@ interface Project {
   link?: string
 }
 
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'Website Kasir Restoran',
-    category: ['Laravel'],
-    image: '/projects/restoran.png',
-    technologies: ['Laravel', 'MySQL', 'Tailwind'],
-    description: 'Aplikasi kasir restoran berbasis web menggunakan Laravel dengan fitur manajemen produk, transaksi, dan laporan.',
-    longDescription: 'Aplikasi Kasir Laravel adalah sistem point of sale (POS) yang komprehensif untuk bisnis retail. Aplikasi ini memiliki fitur manajemen inventaris yang kuat, pemrosesan transaksi yang cepat, pencetakan nota, dan sistem pelaporan yang detail. Sistem ini dapat mengelola berbagai jenis produk, kategori, dan harga dengan mudah. Dashboard admin memungkinkan pemilik bisnis untuk memantau penjualan dan inventaris. Selain itu, aplikasi ini mengimplementasikan sistem role-based access control untuk keamanan yang optimal.',
-    link: '#'
-  },
-  {
-    id: 2,
-    title: 'NiMpo XXI',
-    category: ['Laravel'],
-    image: '/projects/bioskop.png',
-    technologies: ['Laravel', 'MySQL', 'Tailwind'],
-    description: 'Aplikasi kasir bioskop berbasis web menggunakan Laravel dengan fitur manajemen produk, transaksi, dan laporan.',
-    longDescription: 'NiMpo XXI adalah aplikasi kasir berbasis web yang dikembangkan menggunakan framework Laravel, dirancang khusus untuk mendukung operasional kasir bioskop. Aplikasi ini mempermudah petugas dalam mengelola penjualan tiket film, makanan, hingga pelaporan transaksi secara real-time. Aplikasi ini dibangun dengan fokus pada kemudahan penggunaan, pengelolaan data yang efisien, dan tampilan yang ramah pengguna, sehingga cocok digunakan oleh staf kasir tanpa perlu pelatihan teknis mendalam.',
-    link: '#'
-  },
-]
-
 export default function Proyek() {
+  const [projects, setProjects] = useState<Project[]>([])
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    fetchProjects()
     setIsLoaded(true)
   }, [])
+
+  async function fetchProjects() {
+    try {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        throw error
+      }
+
+      if (data) {
+        const projectsWithUrls = data.map((project) => {
+          // Remove any existing full URLs from the image path
+          const cleanImagePath = project.image.replace(
+            /^https:\/\/.*\/storage\/v1\/object\/public\/project-images\//,
+            ''
+          )
+
+          // Get the correct public URL for the image
+          const { data: storageData } = supabase
+            .storage
+            .from('project-images')
+            .getPublicUrl(cleanImagePath)
+
+          return {
+            ...project,
+            category: Array.isArray(project.category) ? project.category : [project.category],
+            technologies: Array.isArray(project.technologies) ? project.technologies : project.technologies.split(','),
+            image: storageData.publicUrl
+          }
+        })
+
+        console.log('Clean image paths:', projectsWithUrls.map(p => p.image))
+        setProjects(projectsWithUrls)
+      }
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Filter projects based on category and search term
   const filteredProjects = projects
@@ -224,7 +249,22 @@ export default function Proyek() {
 
         {/* Project Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.length > 0 ? (
+          {loading ? (
+            // Loading skeleton
+            Array(6).fill(0).map((_, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg animate-pulse">
+                <div className="h-56 bg-gray-700" />
+                <div className="p-6">
+                  <div className="h-6 bg-gray-700 rounded w-3/4 mb-4" />
+                  <div className="h-4 bg-gray-700 rounded w-full mb-4" />
+                  <div className="flex gap-2">
+                    <div className="h-6 bg-gray-700 rounded w-16" />
+                    <div className="h-6 bg-gray-700 rounded w-16" />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : filteredProjects.length > 0 ? (
             filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
@@ -244,7 +284,7 @@ export default function Proyek() {
                     quality={100}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    priority={index < 3} // Load first 3 images immediately
+                    priority={index < 3}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                     <button

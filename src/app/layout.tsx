@@ -2,7 +2,9 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Outfit, Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import CTASection from '@/components/CTASection'
+import ScrollToTop from '@/components/ScrollToTop' // Add this import
+
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -31,7 +33,8 @@ export default function RootLayout({
       <body className={`${inter.variable} ${outfit.variable} font-inter`}>
         <Navbar />
         <main className="min-h-screen">{children}</main>
-        <Footer />
+        <CTASection />
+        <ScrollToTop />
       </body>
     </html>
   )
