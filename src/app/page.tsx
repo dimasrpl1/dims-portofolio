@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { Code, Monitor, Server, Star, Coffee, ChevronDown, MessageSquare, FolderOpen } from 'lucide-react'
 import SkillBar from '@/components/SkillBar'
 import EducationSection from '@/components/EducationSection';
+import SectionHeader from '@/components/SectionHeader';
 
 // Define Role type and ROLES constant
 type Role = {
@@ -343,22 +344,8 @@ interface SectionProps {
 
 function Section({ title, subtitle, children, id }: SectionProps) {
   return (
-    <section id={id} className="py-24 px-6 text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12"
-      >
-        <h2 className="text-3xl font-outfit font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-          {title}
-        </h2>
-        {subtitle && (
-          <p className="font-inter text-gray-400">{subtitle}</p>
-        )}
-        <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4"></div>
-      </motion.div>
+    <section id={id} className="py-24 px-6">
+      <SectionHeader title={title} subtitle={subtitle} />
       {children}
     </section>
   )

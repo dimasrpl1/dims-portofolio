@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/utils/supabase'
+import { techIconMap } from '@/utils/techIcons'
 
 interface Project {
   id: string // Change to string since Supabase uses UUID
@@ -400,7 +401,7 @@ export default function Proyek() {
                   <div className="absolute top-4 right-4 flex space-x-2">
                     <button
                       onClick={() => setSelectedProject(null)}
-                      className="bg-white/20 backdrop-blur-md text-white p-2 rounded-full hover:bg-white/30 transition-colors"
+                      className="bg-red-500/20 backdrop-blur-md text-red-500 p-2 rounded-full hover:bg-red-500/30 hover:text-red-400 transition-all duration-300"
                       aria-label="Close"
                     >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -431,15 +432,32 @@ export default function Proyek() {
                 </div>
                 
                 <div className="mb-8">
-                  <h3 className="text-xl font-semibold text-white mb-4 font-outfit">Teknologi yang Digunakan</h3>
-                  <div className="flex flex-wrap gap-2">
+                  <h3 className="text-xl font-semibold text-white mb-4 font-outfit">
+                    Teknologi yang Digunakan
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
                     {selectedProject.technologies.map((tech) => (
-                      <span
+                      <motion.div
                         key={tech}
-                        className="px-4 py-2 bg-gray-800 text-gray-400 rounded-lg text-sm font-medium font-inter"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        {tech}
-                      </span>
+                        {techIconMap[tech] && (
+                          <div className="w-5 h-5 relative flex-shrink-0">
+                            <Image
+                              src={techIconMap[tech]}
+                              alt={tech}
+                              width={20}
+                              height={20}
+                              className="object-contain"
+                            />
+                          </div>
+                        )}
+                        <span className="text-sm font-medium text-gray-300">
+                          {tech}
+                        </span>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -457,7 +475,7 @@ export default function Proyek() {
                   )}
                   <button
                     onClick={() => setSelectedProject(null)}
-                    className="bg-gray-800 hover:bg-gray-700 text-gray-400 font-medium py-3 px-6 rounded-lg transition-colors text-center font-inter"
+                    className="bg-red-500/20 hover:bg-red-500/30 text-red-400 font-medium py-3 px-6 rounded-lg transition-all duration-300 text-center font-inter"
                   >
                     Tutup
                   </button>

@@ -15,7 +15,7 @@ export default function CTASection() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-center md:text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4">
+              <h2 className="text-2xl md:text-3xl font-outfit font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4">
                 Mari Bekerja Sama
               </h2>
               <p className="text-gray-300 max-w-xl">
