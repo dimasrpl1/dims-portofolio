@@ -193,14 +193,7 @@ export default function Proyek() {
               transition={{ delay: 0.3 }}
               whileHover={{ gap: '20px', transition: { duration: 0.3 } }}
             >
-              <motion.div 
-                className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                whileHover={{ width: '100px', transition: { duration: 0.3 } }}
-              />
-              <motion.div 
-                className="w-8 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                whileHover={{ width: '40px', transition: { duration: 0.3 } }}
-              />
+              
             </motion.div>
             <h1 className="font-outfit text-5xl md:text-6xl font-bold mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600">
